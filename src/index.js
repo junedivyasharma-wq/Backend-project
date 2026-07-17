@@ -22,8 +22,7 @@ const app= expres()
             console.log("ERRR:",error);
             throw error
         })
-        // listen add kiya h ki agr express app import krane ke baad
-        // agar vo kaam na kre ya usme koi problem ho toh
+        
 
         app.listen(process.env.PORT,()=>{
             console.log(`App is listening on port ${process.env.PORT}`);
