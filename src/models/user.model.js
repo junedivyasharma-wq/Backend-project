@@ -2,7 +2,7 @@ import mongoose from"mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
-const userSchema=moongoose.Schema(
+const userSchema=mongoose.Schema(
 {  username:{
     type:String,
     required:true,
@@ -18,7 +18,7 @@ email:{
     lowercase:true,
     trim:true,
 },
-fullname:{
+fullName:{
     type:String,
     required:true,
     trim:true,
@@ -30,12 +30,11 @@ avatar:{
 },
 coverImage:{
     type:String ,// cloudinary url
-    required:true,
 },
 
 watchHistory:[
         {
-            type:Schema.Types.objectId,
+            type:mongoose.Schema.Types.ObjectId,
             ref:"Videos"
         } 
 ],
@@ -49,10 +48,9 @@ refreshToken:{
 },
 {timestamps:true});
 
-userSchema.pre("save",async function (next){
-    if(!this.isModified("password")) return next();
+userSchema.pre("save",async function (){
+    if(!this.isModified("password")) return ;
     this.password= await bcrypt.hash(this.password, 10)
-    next()
 })
 
 userSchema.methods.isPasswordCorrect= async function(password){
@@ -64,8 +62,8 @@ userSchema.methods.generateAccessToken= function(){
         {
             _id: this._id,
             email:this.email,
-            username=this.username,
-            fullname:this.fullname
+            username:this.username,
+            fullName:this.fullName
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
